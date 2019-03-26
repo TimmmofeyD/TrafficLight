@@ -1,3 +1,7 @@
+#include <ir_Lego_PF_BitStreamEncoder.h> // we connect libraries
+#include <IRremote.h>
+#include <IRremoteInt.h>
+#include <boarddefs.h>                 
 int LC_g=0;  //here we assign variables responsible for the colors at each Traffic Light(future, as TL)
 int LC_y=1;
 int LC_r=2;
@@ -10,6 +14,8 @@ int LP_gt=8;
 int LP_rt=9;
 int But=10; // set the button for TL
 #define phr A0  //set the photoresistor 
+IRrecv irrecv(11); // pin to which IR is connected
+decode_results results;
 void setup() {
   pinMode(But, INPUT); //configurate Arduino on receive data from the button
   pinMode(LC_g, OUTPUT); //configurate Arduino to send data to the TL
@@ -21,8 +27,9 @@ void setup() {
   pinMode(LP_g, OUTPUT);
   pinMode(LP_gt, OUTPUT);
   pinMode(LP_r, OUTPUT);
-  pinMode(LP_rt, OUTPUT);  
-     
+  pinMode(LP_rt, OUTPUT);
+  Serial.begin(9600); //set the speed of the COM port  
+  irrecv.enableIRIn();  //we start reception
 }
 
 void loop() {
@@ -94,7 +101,10 @@ void loop() {
           
         }
 
-
-
-
+      /* C0DE for TL IRremote controler */
+      /*  if( irrecv.decode( &results)){ //if the data came
+        Serial.println(results.value, HEX); // print the data // we recognize the butttons  necessary for us
+        irrecv.resume(); // accept the fillowing command
+       }
+*/ 
 }
