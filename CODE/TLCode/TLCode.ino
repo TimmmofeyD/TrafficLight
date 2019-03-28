@@ -14,13 +14,66 @@ int But=12; // set the button for TL
 //переменные для трафика
 int b_t = 5000;
 int l_t = 3000;
-
+int mini = 1000;
 
 #define phr A0  //set the photoresistor 
 IRrecv irrecv(13); // pin to which IR is connected
 
 decode_results results;
+void press_but(){
+                      digitalWrite(LC_g, LOW);
+                      digitalWrite(LC_y, HIGH);
+                       delay(1000);
+                      digitalWrite(LC_y, LOW);
+                      digitalWrite(LC_r, HIGH);
+                      digitalWrite(LP_r, LOW);
+                      digitalWrite(LP_g, HIGH);
+                       delay(3000); 
+                      digitalWrite(LC_r, LOW);
+                      digitalWrite(LC_g, HIGH);
+                      digitalWrite(LP_g, LOW);
+                      digitalWrite(LP_r, HIGH);
 
+}
+
+
+void check_press_but(){
+  int ButVal;
+
+   if(results.value == 0xFF38C7){
+          for (int i =2; i < 12; i++)
+            digitalWrite(i, LOW);
+          
+          int flag = 0;
+            while(true){
+                      digitalWrite(LC_g, HIGH);
+                      digitalWrite(LP_r, HIGH);
+                   ButVal=digitalRead(But);
+                Serial.println(ButVal); 
+                    if(ButVal==HIGH)
+                    flag = 1;
+                    if (flag == 1){
+                     press_but();
+                    flag = 0;
+                    for (int j = 1; j<31;j++){
+                      delay(200);
+                       ButVal=digitalRead(But);
+                       if(ButVal==HIGH)
+                         flag = 1;
+                    }
+                    }
+                     
+        if( irrecv.decode( &results)){
+          Serial.println(results.value, HEX);
+          if (results.value == 0xFF30CF){
+            for(int i=2; i<12; i++)
+            digitalWrite(i, LOW);
+            return ;}
+            irrecv.resume();
+          }
+            }
+              }
+}
 void check_night(){
   int value=analogRead(phr); // read the value from photoresistor 
   int flag = 1;
@@ -88,8 +141,9 @@ void remote_control(){
 void main_traffic(){
 
   //проверка на наступление ночи
- check_night();  
- 
+ check_night(); 
+ // Проверка нажатия кнопки 
+ check_press_but();
 // контроль с пульта
 remote_control();
  
@@ -109,15 +163,19 @@ remote_control();
  check_night(); 
  // контроль с пульта
 remote_control();
+// Проверка нажатия кнопки 
+ check_press_but();
                   digitalWrite(LP_g, HIGH);
                   digitalWrite(LP_rt, HIGH);
                   digitalWrite(LC_y, HIGH);
-                   delay(1000);   
+                   delay(mini);   
                 
  //проверка на наступление ночи
  check_night(); 
  // контроль с пульта
 remote_control();
+// Проверка нажатия кнопки 
+ check_press_but();
                   digitalWrite(LC_r,HIGH);
                   digitalWrite(LC_gt, HIGH);
                   digitalWrite(LP_rt, LOW);
@@ -129,16 +187,20 @@ remote_control();
  check_night(); 
  // контроль с пульта
 remote_control();
+// Проверка нажатия кнопки 
+ check_press_but();
                   digitalWrite(LC_gt,LOW);
                   digitalWrite(LC_yt, HIGH);
                   digitalWrite(LC_r, HIGH);
                   digitalWrite(LP_gt, HIGH);
                   digitalWrite(LP_r, HIGH);
-                  delay(1000);
+                  delay(mini);
  //проверка на наступление ночи
  check_night();  
  // контроль с пульта
-remote_control();        
+remote_control();
+// Проверка нажатия кнопки 
+ check_press_but();        
                 digitalWrite(LC_yt, LOW);
                 digitalWrite(LC_r, LOW);
                 digitalWrite(LC_gt,LOW);
@@ -151,7 +213,9 @@ remote_control();
                 delay(b_t);
            
   //проверка на наступление ночи
- check_night();  
+ check_night();
+ // Проверка нажатия кнопки 
+ check_press_but();  
  // контроль с пульта
 remote_control();               
        /* C0DE for normal operation of TL is complited */
@@ -163,6 +227,7 @@ void setup() {
   pinMode(But, INPUT); //configurate Arduino on receive data from the button
   pinMode(LC_g, OUTPUT); //configurate Arduino to send data to the TL
   pinMode(LC_y, OUTPUT);
+  pinMode(LC_r, OUTPUT);
   pinMode(LC_g, OUTPUT);
   pinMode(LC_gt, OUTPUT);   
   pinMode(LC_yt, OUTPUT);
@@ -176,24 +241,15 @@ void setup() {
 }
 
 void loop() {
-    /* C0DE for TL photoresistor */
-     
-       
-        /* C0DE for TL button for human
-     int ButVal=digitalRead(But);
-        Serial.println(ButVal); */
-        
-    
-
- /*for (int i = 0; i < 11; i++) { //Checking to LEDs
-  digitalWrite(i, HIGH);  
-  delay(100);
-  digitalWrite(i, LOW);
-  delay(100);
+/*for (int i = 0; i < 11; i++) { //Checking to LEDs
+     digitalWrite(i, HIGH);  
+        delay(100);
+     digitalWrite(i, LOW);
+        delay(100);
   } */
     
   
-main_traffic();
+main_traffic(); //Main c0de
  
  
      
