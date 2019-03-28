@@ -12,7 +12,8 @@ int LP_rt=11;
 int But=12; // set the button for TL
 
 //переменные для трафика
-int big_traffic = 5000;
+int b_t = 5000;
+int l_t = 3000;
 
 
 #define phr A0  //set the photoresistor 
@@ -95,77 +96,64 @@ remote_control();
    /* Now write C0DE normal operation of TL */
          //when the movement comes from the first side
             //Light for car
-                digitalWrite(LC_y, LOW);
-                digitalWrite(LC_yt, LOW);
-                digitalWrite(LC_g, HIGH);
-                digitalWrite(LC_rt, HIGH);
-                 delay(3000);
+                 for(int i=2; i<12; i++){ 
+                  digitalWrite(i, LOW);
+                }
+                
+                  digitalWrite(LC_g, HIGH);
+                  digitalWrite(LC_rt, HIGH);
+                  digitalWrite(LP_g, HIGH);
+                  digitalWrite(LP_rt, HIGH);         
+                   delay(b_t);
  //проверка на наступление ночи
  check_night(); 
  // контроль с пульта
 remote_control();
-                 
-            //Light for human
-                digitalWrite(LP_g, HIGH);
-                digitalWrite(LP_rt, HIGH);
-                 delay(3000);
+                  digitalWrite(LP_g, HIGH);
+                  digitalWrite(LP_rt, HIGH);
+                  digitalWrite(LC_y, HIGH);
+                   delay(1000);   
+                
  //проверка на наступление ночи
  check_night(); 
  // контроль с пульта
 remote_control();
-         //when there is a cheange of Traffic and TL (yellow)
-            //Light for car
-
-                digitalWrite(LC_y, HIGH);
-                 delay(1000);
+                  digitalWrite(LC_r,HIGH);
+                  digitalWrite(LC_gt, HIGH);
+                  digitalWrite(LP_rt, LOW);
+                  digitalWrite(LP_g, LOW);
+                  digitalWrite(LP_gt, HIGH);
+                  digitalWrite(LP_r, HIGH);
+                   delay(l_t);
  //проверка на наступление ночи
  check_night(); 
  // контроль с пульта
 remote_control();
-         //when the movement comes from the second side
-                digitalWrite(LP_gt, LOW);
-                digitalWrite(LP_r, LOW);
-             //Light from car
-                digitalWrite(LC_g, LOW);
-                 delay(3000);
+                  digitalWrite(LC_gt,LOW);
+                  digitalWrite(LC_yt, HIGH);
+                  digitalWrite(LC_r, HIGH);
+                  digitalWrite(LP_gt, HIGH);
+                  digitalWrite(LP_r, HIGH);
+                  delay(1000);
  //проверка на наступление ночи
  check_night();  
  // контроль с пульта
 remote_control();        
-                digitalWrite(LC_y, LOW);
-                digitalWrite(LC_rt, LOW);
-                digitalWrite(LC_gt, HIGH);
-                digitalWrite(LC_r, HIGH);
-                
-             //Light from human 
-     
-                digitalWrite(LP_rt, HIGH);
-                digitalWrite(LP_g, HIGH);
-                 delay(3000);
-         //when there is a cheange of Traffic and TL (yellow Two)
-              //Light from car
-                digitalWrite(LC_yt, HIGH);
-                delay(1000);
-                digitalWrite(LC_gt, LOW);
-                
+                digitalWrite(LC_yt, LOW);
                 digitalWrite(LC_r, LOW);
+                digitalWrite(LC_gt,LOW);
+                digitalWrite(LC_g, HIGH);
+                digitalWrite(LC_r,HIGH);
+                digitalWrite(LP_r, LOW);
+                digitalWrite(LP_g, HIGH);
+                digitalWrite(LP_gt, LOW);
+                digitalWrite(LP_rt,HIGH);
+                delay(b_t);
+           
   //проверка на наступление ночи
  check_night();  
  // контроль с пульта
 remote_control();               
-         //when the movement comes from the first side #2
-             //Light from car
-                digitalWrite(LC_yt, LOW);
-                digitalWrite(LC_rt, HIGH);
-                digitalWrite(LC_g, HIGH);
-             //Light from human   
-                
-                digitalWrite(LP_rt, LOW);
-                digitalWrite(LP_g, LOW);
-                digitalWrite(LP_gt, HIGH);
-                digitalWrite(LP_r, HIGH);
-                 delay(3000);
-
        /* C0DE for normal operation of TL is complited */
        
 }
