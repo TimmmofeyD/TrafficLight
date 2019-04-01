@@ -1,2 +1,4 @@
 # TrafficLight
-TrafficLight
+TrafficLight max
+
+Максимальный светофор 
